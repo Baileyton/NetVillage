@@ -5,14 +5,19 @@ import com.example.demo.entity.Member;
 import com.example.demo.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.Collections;
 
 @Controller
 @RequiredArgsConstructor
@@ -50,4 +55,43 @@ public class MemberController {
 
         return "home";
     }
+
+    //게스트 로그인 화면
+    @GetMapping(value = "/templogin")
+    public String tempLogin(MemberDto memberDto, Model model) {
+        model.addAttribute("memberDto", new MemberDto());
+        return "member/tempForm";
+    }
+
+    //게스트 로그인
+    @PostMapping(value = "/templogin")
+    public String tempLogin(@RequestParam("nick") String nick, Model model, HttpServletResponse response){
+        if(StringUtils.isBlank(nick)){
+            model.addAttribute("errorsMessage", Collections.singletonList("닉네임에 공백은 불가능 합니다"));
+            return "member/tempForm";
+        }
+        try{
+            nick = nick.replaceAll("\\s+", "");
+
+            Cookie nickCookie = new Cookie("nick", nick);
+            nickCookie.setMaxAge(3600);  //쿠키 유효시간 설정
+            response.addCookie(nickCookie);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "member/tempForm";
+        }
+        model.addAttribute("successMessage", "게스트 로그인에 성공했습니다.");
+        return "home";
+    }
+
+
+    //로그인 화면
+    @GetMapping(value = "/login")
+    public String loginForm(MemberDto memberDto, Model model){
+        model.addAttribute("memberDto", new MemberDto());
+        return "member/loginForm";
+    }
+    
+    //로그인
+
 }
