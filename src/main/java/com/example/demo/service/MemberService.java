@@ -24,4 +24,16 @@ public class MemberService {
         }
         memberRepository.save(member);
     }
+
+    public Member login(String nick, String rawPassword) {
+        Member member = memberRepository.findByNick((nick));
+        if(member == null){
+            throw new IllegalArgumentException("존재하지 않는 회원입니다.");
+        }
+        if(!passwordEncoder.matches(rawPassword,member.getPassword())){
+            throw new IllegalArgumentException("비밀번호를 다시 입력해주세요");
+        }
+
+        return member;
+    }
 }

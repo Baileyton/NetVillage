@@ -93,5 +93,32 @@ public class MemberController {
     }
     
     //로그인
+    @PostMapping(value = "/login")
+    public String login(@Valid MemberDto memberDto, BindingResult bindingResult, Model model, HttpServletResponse response) {
+        if(bindingResult.hasErrors()){
+            return "member/loginForm";
+        }
+        try{
+            String nick = memberDto.getNick();
+            String password = memberDto.getPassword();
 
+            //사용자 검증
+            Member member = memberService.login(nick, password);
+
+            if(member == null) {
+                return "member/loginForm";
+            }
+
+            Cookie nickCookie = new Cookie("nick", nick);
+            nickCookie.setMaxAge(3600); // 큐키 유효시간
+            response.addCookie(nickCookie);
+            log.info("login info: " + member);
+
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "member/loginForm";
+        }
+
+        return "home";
+    }
 }
