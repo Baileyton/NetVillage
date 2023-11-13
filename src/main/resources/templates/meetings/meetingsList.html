@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <title>모임리스트</title>
+    <style>
+        .home-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            font-family: 'MapoPeacefull', serif;
+        }
+
+        .home-container > * {
+            padding: 2rem;
+        }
+
+        @media (max-width: 767px) {
+            .home-container > * {
+                padding: 2rem 1rem;
+            }
+        }
+
+        .list-container {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .list-title {
+            font-size: 1.4rem;
+            margin: 0 1rem 0 0;
+            text-align: center;
+        }
+        .cardContainer{
+            border: solid 1px #333;
+            border-radius: 1rem;
+            background-color: whitesmoke;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* max-width: 25rem; */
+            min-width: 20rem;
+            > * {
+                margin-bottom: 1.25rem;
+            }
+            .divider {
+                margin: 0 0.4em 0.1em;
+                overflow: hidden;
+            }
+            position: relative;
+            cursor: pointer;
+        }
+        .InfoHeader {
+            width: 100%;
+            height: 0.875rem;
+            font-size: 0.8rem;
+            color: gray;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            > * {
+                overflow: hidden;
+                height: 100%;
+                display: flex;
+            }
+        }
+        .InfoBody{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            > * {
+                margin-bottom: 0.625rem;
+            }
+            > #title {
+                font-size: 1.25rem;
+            }
+            > #location {
+                height: 0.875rem;
+                overflow: hidden;
+                font-size: 0.8rem;
+                color: gray;
+                margin-bottom: 0;
+                display: flex;
+                > * {
+                    display: flex;
+                    #marker {
+                        margin-right: 0.15em;
+                    }
+                }
+            }
+        }
+        .InfoFooter{
+            width: 100%;
+            color: gray;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<th:block th:replace="fragments/header::header"></th:block>
+<body>
+<div class="home-container">
+    <div class="list-container">
+        <h1 class="list-title">현재 이런 모임들이 있어요!</h1>
+        <div style="display: flex; position: absolute; transition: 0.5s; transform: translateX(0px); margin-top: 50px" id="carousel">
+            <div class="cardContainer" th:each="meeting : ${meetings}">
+                <div class="InfoHeader">
+                    <div>
+                        <div th:text="${meeting.date}"></div>
+                        <div class="divider">|</div>
+                        <div th:text="${meeting.time}"></div>
+                    </div>
+                    <div>
+                        <div th:text="${meeting.meetPo}"></div>
+                        <div class="divider">|</div>
+                        <div th:text="${meeting.meetTo}"></div>
+                    </div>
+                </div>
+                <div class="InfoBody">
+                    <div id="title" th:text="${meeting.meetType}"></div>
+                    <div id="location">
+                        <div th:text="${meeting.meetPlace}"></div>
+                        <div class="divider">|</div>
+                        <div>
+                            <div th:text="${meeting.meetLocation}"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="InfoFooter" th:text="${meeting.meetDetail}"/>
+                <div class="InfoFooter" th:text="${meeting.nick}"/>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<th:block th:replace="fragments/footer::footer"></th:block>
+</html>

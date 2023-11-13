@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <title>모임 만들기</title>
+    <style>
+        .meetContainer {
+            width: fit-content;
+            height: fit-content;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: auto;
+            border-radius: 1rem;
+        }
+        .meet {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .input-form {
+            width: 100%;
+            max-width: 22rem;
+            margin: 0 auto;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+
+        .form-input {
+            margin-bottom: 1rem;
+        }
+        label {
+            font-weight: bold;
+        }
+        button {
+            width: 100%;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: darkgray;
+        }
+    </style>
+</head>
+<th:block th:replace="fragments/header::header"></th:block>
+<body>
+<div class="meetContainer">
+    <div class="meet">
+        <h2>모임 만들기</h2>
+    </div>
+
+    <form th:action="@{/meetings/new}" th:object="${form}" method="post">
+        <div class="form-input">
+            <label for="meetType">어떤 종류 인가요?</label>
+            <input
+                    type="text"
+                    id="meetType"
+                    name="meetType"
+            />
+        </div>
+        <div class="form-input">
+            <label for="meetLocation">지역을 입력해주세요</label>
+            <input
+                    type="text"
+                    id="meetLocation"
+                    name="meetLocation"
+            />
+        </div>
+        <div class="form-input">
+            <label for="meetPlace">장소를 입력해주세요</label>
+            <input
+                    type="text"
+                    id="meetPlace"
+                    name="meetPlace"
+            />
+        </div>
+        <div class="form-input">
+            <label for="date">날짜를 선택해주세요</label>
+            <input
+                    type="date"
+                    id="date"
+                    name="date"
+            />
+        </div>
+        <div class="form-input">
+            <label for="time">시간을 선택해주세요</label>
+            <input type="time" id="time" name="time" step="60" />
+        </div>
+        <div class="form-input">
+            <label for="meetTo">몇 명을 모집하나요?</label>
+            <input
+                    type="number"
+                    id="meetTo"
+                    name="meetTo"
+            />
+        </div>
+        <div class="form-input">
+            <label for="meetTitle">모임 이름을 적어주세요!</label>
+            <input
+                    type="text"
+                    id="meetTitle"
+                    name="meetTitle"
+            />
+        </div>
+        <div class="form-input">
+            <label for="meetDetail">모임 설명을 간단히 적어주세요!</label>
+            <input
+                    id="meetDetail"
+                    name="meetDetail"
+            ></input>
+        </div>
+        <div class="sbumit-buttons">
+            <button
+                    class="submit-button"
+                    name="submit"
+                    type="submit"
+            >
+                등록하기
+            </button>
+        </div>
+    </form>
+</div>
+</body>
+<th:block th:replace="fragments/footer::footer"></th:block>
+</html>
