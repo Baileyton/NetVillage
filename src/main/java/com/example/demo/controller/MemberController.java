@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.MemberDto;
 import com.example.demo.entity.Member;
+import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,8 @@ public class MemberController {
     private final PasswordEncoder passwordEncoder;
 
     private final MemberService memberService;
+
+    private final JwtTokenProvider jwtTokenProvider;
 
     //회원가입 화면
     @GetMapping(value = "/join")
@@ -109,7 +112,8 @@ public class MemberController {
                 return "member/loginForm";
             }
 
-            Cookie nickCookie = new Cookie("nick", nick);
+            String token = jwtTokenProvider.createToken(nick);
+            Cookie nickCookie = new Cookie("nick", token);
             nickCookie.setMaxAge(3600); // 큐키 유효시간
             response.addCookie(nickCookie);
             log.info("login info: " + member);
