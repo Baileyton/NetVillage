@@ -42,7 +42,7 @@ function showMessage(message) {
 document.getElementById('sendButton').addEventListener('click', function() {
     var messageInput = document.getElementById('messageInput');
     var message = messageInput.value.trim();
-    var sender = getNickFromCookie() || 'user'; // 쿠키에서 가져오거나 기본값으로 'user' 사용
+    var sender = getNickFromCookie() || 'user';
     if (message) {
         stompClient.send('/app/chat.sendMessage', {}, JSON.stringify({ 'content': message, 'sender': sender }));
         messageInput.value = '';

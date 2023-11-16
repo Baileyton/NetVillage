@@ -23,7 +23,6 @@
         }
 
         .list-container {
-            flex: 1 1 auto;
             display: flex;
             flex-direction: column;
         }
@@ -41,8 +40,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* max-width: 25rem; */
             min-width: 20rem;
+            margin: 10px;
             > * {
                 margin-bottom: 1.25rem;
             }
@@ -107,7 +106,7 @@
 <div class="home-container">
     <div class="list-container">
         <h1 class="list-title">현재 이런 모임들이 있어요!</h1>
-        <div style="display: flex; position: absolute; transition: 0.5s; transform: translateX(0px); margin-top: 50px" id="carousel">
+        <div style="display: flex; transition: 0.5s; transform: translateX(0px); margin-top: 50px" id="carousel">
             <div class="cardContainer" th:each="meeting : ${meetings}">
                 <div class="InfoHeader">
                     <div>
@@ -137,6 +136,6 @@
         </div>
     </div>
 </div>
-</body>
 <th:block th:replace="fragments/footer::footer"></th:block>
+</body>
 </html>

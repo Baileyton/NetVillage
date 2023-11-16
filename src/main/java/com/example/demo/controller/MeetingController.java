@@ -2,7 +2,11 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.MeetingDto;
 import com.example.demo.entity.Meeting;
+import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.service.MeetingService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -33,7 +37,7 @@ public class MeetingController {
     }
 
     @PostMapping(value = "/meetings/new")
-    public String create(@Valid MeetingDto meetingDto, Model model, HttpServletRequest request) {
+    public String create(@Valid MeetingDto meetingDto, Model model, HttpServletRequest request, String secretKey) {
         try{
             Cookie[] cookies = request.getCookies();
             String nick = null;
@@ -41,7 +45,16 @@ public class MeetingController {
             if (cookies != null) {
                 for (Cookie cookie : cookies) {
                     if (cookie.getName().equals("nick")) {
-                        nick = cookie.getValue();
+                        String jwtToken = cookie.getValue();
+
+                        Jws<Claims> claimsJws = Jwts.parser()
+                                .setSigningKey(secretKey)
+                                .parseClaimsJws(jwtToken);
+
+                        Claims claims = claimsJws.getBody();
+
+                        nick = claims.getSubject();
+
                         break;
                     }
                 }

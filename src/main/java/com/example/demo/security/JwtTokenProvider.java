@@ -22,6 +22,7 @@ public class JwtTokenProvider {
 
     public String createToken(String nick){
         Claims claims = Jwts.claims().setSubject(nick);
+
         Date now = new Date();
         Date validity = new Date(now.getTime() + validitySeconds);
 
@@ -31,5 +32,16 @@ public class JwtTokenProvider {
                 .setExpiration(validity)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
+    }
+
+    public String getNick(String token){
+        try {
+            String nick = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+            log.info("Nick extracted from token: {}", nick);
+            return nick;
+        } catch (Exception e) {
+            log.error("Error extracting nick from token: ", e);
+            return null;
+        }
     }
 }
